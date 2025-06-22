@@ -1,0 +1,5 @@
+packages:
+  - play # 组件测试的代码
+  - docs # 组件文档
+  - "packages/**" # 组件代码
+
