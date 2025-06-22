@@ -1,8 +1,3 @@
-function createNameSpace(name: string) {
-  const prefixName = `cz-${name}`;
-  return createBEM(prefixName);
-}
-
 function createBEM(prefixName: string) {
   const b = (blockSuffix: string = "") => _bem(prefixName, blockSuffix, "", "");
   const e = (element: string = "") =>
@@ -50,6 +45,11 @@ function _bem(
     prefixName += `--${modifier}`;
   }
   return prefixName;
+}
+
+export function createNameSpace(name: string) {
+  const prefixName = `cz-${name}`;
+  return createBEM(prefixName);
 }
 
 // TEST

@@ -14,5 +14,8 @@
     "@czui/components": "workspace:*",
     "typescript": "5.8.3",
     "vue": "3.5.17"
+  },
+  "devDependencies": {
+    "unplugin-vue-define-options": "3.0.0-beta.14"
   }
 }
