@@ -1,9 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ArrowDownSharp } from "@vicons/ionicons5";
+</script>
 
 <template>
   <h1>Playground</h1>
   <div>
-    <cz-icon :color="'red'" size="20"></cz-icon>
+    <cz-icon :color="'purple'" size="20">
+      <ArrowDownSharp />
+    </cz-icon>
+    <cz-icon :color="'tomato'" size="20">
+      <ArrowDownSharp />
+    </cz-icon>
+    <cz-icon :color="'green'" size="20">
+      <ArrowDownSharp />
+    </cz-icon>
+    <cz-icon :color="'orange'" size="20">
+      <ArrowDownSharp />
+    </cz-icon>
   </div>
 </template>
 
