@@ -1,0 +1,21 @@
+@use './mixins/minxins.scss' as *;
+
+@include b(tree-node) {
+    padding: 5px 0;
+    font-size: 16px;
+
+    &:hover {
+        background-color: rgba($color: #d8e6eb, $alpha: 1);
+    }
+
+    @include e('expand-icon') {
+        display: inline-block;
+        vertical-align: middle;
+        transform: rotate(0deg);
+        transition: transform 0.2s ease-in;
+
+        &.expanded {
+            transform: rotate(90deg);
+        }
+    }
+}
