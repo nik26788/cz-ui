@@ -5,6 +5,7 @@
             :key="node.key"
             :node="node"
             :expanded="isExpanded(node)"
+            @toggle="toggleExpanded"
         >
         </cz-tree-node>
     </div>
@@ -112,5 +113,21 @@ const flattenTree = computed(() => {
 
 function isExpanded(node: TreeNode) {
     return expendedKeysSet.value.has(node.key)
+}
+
+function collapse(node: TreeNode) {
+    expendedKeysSet.value.delete(node.key)
+}
+
+function expanded(node: TreeNode) {
+    expendedKeysSet.value.add(node.key)
+}
+
+function toggleExpanded(node: TreeNode) {
+    if (expendedKeysSet.value.has(node.key)) {
+        collapse(node)
+    } else {
+        expanded(node)
+    }
 }
 </script>

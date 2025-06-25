@@ -3,6 +3,7 @@
 @include b(tree-node) {
     padding: 5px 0;
     font-size: 16px;
+    cursor: pointer;
 
     &:hover {
         background-color: rgba($color: #d8e6eb, $alpha: 1);
@@ -16,6 +17,11 @@
 
         &.expanded {
             transform: rotate(90deg);
+        }
+
+        &.is-leaf {
+            fill: transparent;
+            cursor: default;
         }
     }
 }
