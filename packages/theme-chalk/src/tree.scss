@@ -9,11 +9,17 @@
         background-color: rgba($color: #d8e6eb, $alpha: 1);
     }
 
+    @include e(content) {
+        & > * {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
     @include e('expand-icon') {
-        display: inline-block;
-        vertical-align: middle;
         transform: rotate(0deg);
         transition: transform 0.2s ease-in;
+        margin-right: 5px;
 
         &.expanded {
             transform: rotate(90deg);

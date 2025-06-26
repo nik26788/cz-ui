@@ -5,6 +5,7 @@
             :key="node.key"
             :node="node"
             :expanded="isExpanded(node)"
+            :loadingKeys="loadingKeysRef"
             @toggle="toggleExpanded"
         >
         </cz-tree-node>
@@ -14,7 +15,7 @@
 <script setup lang="ts">
 import { createNameSpace } from '@czui/utils/create'
 import { computed, ref, watch } from 'vue'
-import { TreeNode, TreeOption, treeProps } from './tree'
+import { TreeNode, TreeOption, treeProps, Key } from './tree'
 import CzTreeNode from './treeNode.vue'
 defineOptions({
     name: 'cz-tree'
@@ -40,13 +41,9 @@ function createOptions(key: string, label: string, children: string) {
     }
 }
 
-const treeOptions = createOptions(
-    props.keyField,
-    props.labelField,
-    props.childrenField
-)
+const treeOptions = createOptions(props.keyField, props.labelField, props.childrenField)
 
-function createTree(data: TreeOption[]) {
+function createTree(data: TreeOption[], parent: TreeNode | null = null) {
     function traversal(data: TreeOption[], parent: TreeNode | null = null) {
         return data.map(node => {
             const children = treeOptions.getChildren(node) || []
@@ -66,7 +63,7 @@ function createTree(data: TreeOption[]) {
             return treeNode
         })
     }
-    const result: TreeNode[] = traversal(data)
+    const result: TreeNode[] = traversal(data, parent)
 
     return result
 }
@@ -121,6 +118,26 @@ function collapse(node: TreeNode) {
 
 function expanded(node: TreeNode) {
     expendedKeysSet.value.add(node.key)
+    triggerLoading(node)
+}
+
+const loadingKeysRef = ref(new Set<Key>())
+
+function triggerLoading(node: TreeNode) {
+    if (!node.children.length && !node.isLeaf) {
+        const loadingKeys = loadingKeysRef.value
+        if (!loadingKeys.has(node.key)) {
+            loadingKeys.add(node.key)
+            const onLoad = props.onLoad
+            if (onLoad) {
+                onLoad(node.rawNode).then(children => {
+                    node.rawNode.children = children
+                    node.children = createTree(children, node)
+                    loadingKeys.delete(node.key)
+                })
+            }
+        }
+    }
 }
 
 function toggleExpanded(node: TreeNode) {
