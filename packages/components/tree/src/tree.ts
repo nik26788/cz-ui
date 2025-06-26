@@ -39,6 +39,17 @@ export const treeProps = {
     },
     onLoad: {
         type: Function as PropType<(node: TreeOption) => Promise<TreeOption[]>>
+    },
+    selectedKeys: {
+        type: Array as PropType<Key[]>
+    },
+    selectable: {
+        type: Boolean,
+        default: true
+    },
+    multiple: {
+        type: Boolean,
+        default: true
     }
 } as const
 
@@ -54,16 +65,21 @@ export const treeNodeProps = {
     loadingKeys: {
         type: Object as PropType<Set<Key>>,
         required: true
+    },
+    selectedKeys: {
+        type: Array as PropType<Key[]>,
+        default: () => []
     }
 }
 
 export const treeNodeEmits = {
-    toggle: (node: TreeNode) => node
+    toggle: (node: TreeNode) => node,
+    select: (node: TreeNode) => node
 }
 
 export const treeEmits = {
     'update:selectedKeys': (keys: Key[]) => keys
 }
 
-export type TreeNodeProps = Required<ExtractPropTypes<typeof treeNodeProps>>
+export type TreeNodeProps = Partial<ExtractPropTypes<typeof treeNodeProps>>
 export type TreeProps = Partial<ExtractPropTypes<typeof treeProps>>

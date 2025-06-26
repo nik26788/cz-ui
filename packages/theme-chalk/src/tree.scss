@@ -9,11 +9,17 @@
         background-color: rgba($color: #d8e6eb, $alpha: 1);
     }
 
+    @include when(selected) {
+        background: tomato;
+    }
+
     @include e(content) {
-        & > * {
-            display: inline-block;
-            vertical-align: middle;
-        }
+        display: flex;
+        align-items: center;
+    }
+
+    @include e(label) {
+        flex: 1;
     }
 
     @include e('expand-icon') {
@@ -25,9 +31,8 @@
             transform: rotate(90deg);
         }
 
-        &.is-leaf {
-            fill: transparent;
-            cursor: default;
+        .is-leaf & {
+            visibility: hidden;
         }
     }
 }

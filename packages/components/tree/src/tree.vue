@@ -6,6 +6,8 @@
             :node="node"
             :expanded="isExpanded(node)"
             :loadingKeys="loadingKeysRef"
+            :selectedKeys="selectedKeysRef"
+            @select="handleSelected"
             @toggle="toggleExpanded"
         >
         </cz-tree-node>
@@ -15,7 +17,7 @@
 <script setup lang="ts">
 import { createNameSpace } from '@czui/utils/create'
 import { computed, ref, watch } from 'vue'
-import { TreeNode, TreeOption, treeProps, Key } from './tree'
+import { TreeNode, TreeOption, treeProps, Key, treeEmits } from './tree'
 import CzTreeNode from './treeNode.vue'
 defineOptions({
     name: 'cz-tree'
@@ -146,5 +148,47 @@ function toggleExpanded(node: TreeNode) {
     } else {
         expanded(node)
     }
+}
+
+// Selected Node
+const emits = defineEmits(treeEmits)
+const selectedKeysRef = ref<Key[]>([])
+
+watch(
+    () => props.selectedKeys,
+    value => {
+        if (value) {
+            selectedKeysRef.value = value
+            /* console.log(value) */
+        }
+    },
+    {
+        immediate: true
+    }
+)
+
+function handleSelected(node: TreeNode) {
+    let keys = Array.from(selectedKeysRef.value)
+
+    if (!props.selectable) {
+        return
+    }
+
+    if (props.multiple) {
+        const index = keys.findIndex(item => item === node.key)
+
+        if (index > -1) {
+            keys.splice(index, 1)
+        } else {
+            keys.push(node.key)
+        }
+    } else {
+        if (keys.includes(node.key)) {
+            keys = []
+        } else {
+            keys = [node.key]
+        }
+    }
+    emits('update:selectedKeys', keys)
 }
 </script>
